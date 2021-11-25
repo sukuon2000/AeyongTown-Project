@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.kosta.AeyongTown.model.mapper.MemberMapper">
+	<insert id="registerMember" parameterType="memberVO">
+		insert into t_member(member_id, m_password, m_name, nick, tel, birth, email, gender)
+        values(#{memberId}, #{password}, #{name}, #{nick}, #{tel}, to_date(#{birth},'yyyymmdd'), #{email}, #{gender})
+	</insert>
+	
+	<select id="selectMemberInfo" parameterType="string" resultType="memberVO">
+		select 
+			member_id, 
+			m_password as password, 
+			m_name as name, 
+			nick, 
+			tel, 
+			to_char(birth, 'yyyy-mm-dd') as birth, 
+			email, 
+			gender
+		from t_member
+		where member_id=#{value}
+	</select>
+	
+</mapper>

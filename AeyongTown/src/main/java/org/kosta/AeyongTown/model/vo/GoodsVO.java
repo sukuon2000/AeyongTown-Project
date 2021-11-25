@@ -1,7 +1,6 @@
 package org.kosta.AeyongTown.model.vo;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class GoodsVO {
 
@@ -10,7 +9,7 @@ public class GoodsVO {
 	private String title;
 	private String info;
 	private int price;
-	private Date uploadDate;
+	private String uploadDate;
 	private int viewCounts;
 	private MapVO MapVO;
 	private ArrayList<GoodsImgVO> goodsImgVO;
@@ -21,7 +20,7 @@ public class GoodsVO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public GoodsVO(int goodsId, MemberVO memberVO, String title, String info, int price, Date uploadDate,
+	public GoodsVO(int goodsId, MemberVO memberVO, String title, String info, int price, String uploadDate,
 			int viewCounts, org.kosta.AeyongTown.model.vo.MapVO mapVO, ArrayList<GoodsImgVO> goodsImgVO) {
 		super();
 		this.goodsId = goodsId;
@@ -65,10 +64,10 @@ public class GoodsVO {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public Date getUploadDate() {
+	public String getUploadDate() {
 		return uploadDate;
 	}
-	public void setUploadDate(Date uploadDate) {
+	public void setUploadDate(String uploadDate) {
 		this.uploadDate = uploadDate;
 	}
 	public int getViewCounts() {

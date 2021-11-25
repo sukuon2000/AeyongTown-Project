@@ -1,7 +1,5 @@
 package org.kosta.AeyongTown.model.vo;
 
-import java.util.Date;
-
 public class MemberVO {
 	private String memberId;
 	private String password;
@@ -9,7 +7,7 @@ public class MemberVO {
 	private String nick;
 	private String email;
 	private String tel;
-	private Date birth;
+	private String birth;
 	private String gender;
 	private String status;
 	private String imgPath;
@@ -19,7 +17,7 @@ public class MemberVO {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public MemberVO(String memberId, String password, String name, String nick, String email, String tel, Date birth,
+	public MemberVO(String memberId, String password, String name, String nick, String email, String tel, String birth,
 			String gender, String status, String imgPath, MapVO mapVO) {
 		super();
 		this.memberId = memberId;
@@ -71,10 +69,10 @@ public class MemberVO {
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
-	public Date getBirth() {
+	public String getBirth() {
 		return birth;
 	}
-	public void setBirth(Date birth) {
+	public void setBirth(String birth) {
 		this.birth = birth;
 	}
 	public String getGender() {

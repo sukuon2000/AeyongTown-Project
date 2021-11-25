@@ -16,13 +16,13 @@ drop table t_goods_img;
 --1 유저 테이블 생성
 create table t_member(
     member_id varchar2(30) primary key,
-    m_password varchar2(40) not null,
+    m_password varchar2(100) not null,
     m_name varchar2(20) not null,
     nick varchar2(40) not null,
     tel varchar2(11) not null,
     birth date not null,
     email varchar2(50) not null,
-    gender varchar2(4) not null,
+    gender varchar2(6) not null,
     status varchar2(4) default 'on' not null,
     constraint check_gender check( gender in('남성','여성')),
     constraint check_status check( status in('on', 'off'))
