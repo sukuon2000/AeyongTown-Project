@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE tiles-definitions PUBLIC 
+        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
+ <tiles-definitions>  
+    <!-- main layout (메인페이지) -->
+   <definition name="home.tiles" template="/WEB-INF/views/templates/mainlayout.jsp">
+      <put-attribute name="title" value="애용타운~ 당신의 애용품을 거래해보아요~"/>
+      <put-attribute name="header" value="/WEB-INF/views/templates/header.jsp"/>
+      <put-attribute name="footer" value="/WEB-INF/views/templates/footer.jsp"/>
+      <put-attribute name="banner" value="/WEB-INF/views/templates/banner.jsp"/>
+      <put-attribute name="main" value="/WEB-INF/views/home.jsp"/>
+   </definition>
+   <!-- 서브레이아웃 (서브페이지) -->
+   <definition name="sublayout.tiles" template="/WEB-INF/views/templates/layout.jsp">
+      <put-attribute name="title" value="애용타운~ 당신의 애용품을 거래해보아요~"/>
+      <put-attribute name="header" value="/WEB-INF/views/templates/header.jsp"/>
+      <put-attribute name="footer" value="/WEB-INF/views/templates/footer.jsp"/>
+   </definition>
+   
+    <definition name="*.tiles" extends="sublayout.tiles">
+       <put-attribute name="title" value="{1}"/>
+       <put-attribute name="main" value="/WEB-INF/views/{1}.jsp"/>
+    </definition>
+    <definition name="*/*.tiles" extends="sublayout.tiles">
+       <put-attribute name="title" value="{2}"/>
+       <put-attribute name="main" value="/WEB-INF/views/{1}/{2}.jsp"/>
+   </definition>
+
+ </tiles-definitions>   
