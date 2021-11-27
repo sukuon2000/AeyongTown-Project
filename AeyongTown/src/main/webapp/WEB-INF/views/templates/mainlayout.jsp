@@ -39,7 +39,7 @@
 	<!-- Tiles header 영역 -->
 	<tiles:insertAttribute name="header" />
 	<!-- Tiles main 영역 -->
-	<tiles:insertAttribute name="main" />
+	<tiles:insertAttribute name="banner" />
 	<!-- Tiles footer 영역 -->
 	<tiles:insertAttribute name="footer" />
 </body>
