@@ -10,4 +10,6 @@ public interface MemberMapper {
 	void registerMember(MemberVO memberVO);
 	//회원정보조회
 	MemberVO selectMemberInfo(String memberId);
+	//아이디 찾기
+	String findMemberId(MemberVO memberVO);
 }

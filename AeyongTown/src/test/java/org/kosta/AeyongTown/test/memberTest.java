@@ -15,7 +15,7 @@ class memberTest {
 	@Autowired
 	MemberService ms;
 	
-	
+	//회원가입
 	//@Test
 	public void registerMemberTest() {
 		MemberVO a = new MemberVO();
@@ -30,9 +30,25 @@ class memberTest {
 		System.out.println(a);
 		ms.registerMember(a);
 	}
-	
-	@Test
+	//회원정보조회
+	//@Test
 	public void selectMemberInfo() {
 		System.out.println(ms.selectMemberInfo("test2"));
 	}
+	//아이디찾기
+	@Test
+	public void findMemberId() {
+		MemberVO memberVO = new MemberVO();
+		memberVO.setName("테스트");
+		memberVO.setBirth("20000101");
+		memberVO.setEmail("test@gmail.com");
+		
+		if(ms.findMemberId(memberVO) != null) {
+			System.out.println("찾으시는 아이디는 <" + ms.findMemberId(memberVO) + "> 입니다.");
+		} else {
+			System.out.println("해당 정보의 아이디가 존재하지 않습니다. 다시 한번 확인해주세요.");
+		}
+		
+	}
 }
+
