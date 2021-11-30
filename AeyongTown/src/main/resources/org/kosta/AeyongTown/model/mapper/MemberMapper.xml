@@ -34,5 +34,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		and birth=to_date(#{birth},'yyyymmdd')
 		and email=#{email}
 	</select>
+	<select id="idCheck" parameterType="string" resultType="string">
+		select member_id
+		from t_member
+		where member_id=#{value}
+	</select>
 
+	<!-- 스프링 시큐리티에서 해당하는 아이디와 패스워드가 존재, 일치하는지 -->
+	<select id="findMemberById" resultType="memberVO">
+		select member_id as memberId, 
+		m_password as password
+		from t_member
+		where member_id=#{value}
+	</select>
+	<!-- 스프링 시큐리티에서 해당 권한이 존재하는지 -->
+	<resultMap type="AuthoritiesVO" id="AuthoritiesRM">
+		<result column="member_id" property="AuthoritiesVO.memberId"/>
+		<result column="authority" property="AuthoritiesVO.authority"/>
+	</resultMap>
+	<select id="selectAuthorityById" resultType="AuthoritiesVO">
+		select 
+			member_id,
+			authority
+		from t_authorities
+		where member_id=#{value}
+	</select>
 </mapper>

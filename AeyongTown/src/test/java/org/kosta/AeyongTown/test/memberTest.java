@@ -30,13 +30,20 @@ class memberTest {
 		System.out.println(a);
 		ms.registerMember(a);
 	}
+	//회원 아이디가 존재하는지 중복체크
+	@Test
+	public void idCheckTest() {
+		String memberId = "test2";
+		System.out.println("<idCheck Test> memberId : " + ms.idCheck(memberId));
+	}
+	
 	//회원정보조회
 	//@Test
 	public void selectMemberInfo() {
 		System.out.println(ms.selectMemberInfo("test2"));
 	}
 	//아이디찾기
-	@Test
+	//@Test
 	public void findMemberId() {
 		MemberVO memberVO = new MemberVO();
 		memberVO.setName("테스트");
@@ -49,6 +56,12 @@ class memberTest {
 			System.out.println("해당 정보의 아이디가 존재하지 않습니다. 다시 한번 확인해주세요.");
 		}
 		
+	}
+	//@Test
+	public void findMemberTest() {
+		String memberId = "test2";
+		System.out.println(ms.findMemberById(memberId));
+		System.out.println(ms.selectAuthorityById(memberId));
 	}
 }
 

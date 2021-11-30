@@ -1,5 +1,8 @@
 package org.kosta.AeyongTown.service;
 
+import java.util.List;
+
+import org.kosta.AeyongTown.model.vo.AuthoritiesVO;
 import org.kosta.AeyongTown.model.vo.MemberVO;
 
 public interface MemberService {
@@ -9,4 +12,9 @@ public interface MemberService {
 	public MemberVO selectMemberInfo(String memberId);
 	//아이디찾기
 	public String findMemberId(MemberVO memberVO);
+	
+	public MemberVO findMemberById(String memberId);
+	List<AuthoritiesVO> selectAuthorityById(String memberId);
+	
+	public String idCheck(String memberId);
 }

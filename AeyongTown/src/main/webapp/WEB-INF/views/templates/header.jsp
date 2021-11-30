@@ -93,7 +93,7 @@
                                             <li><a href="#">동네 이야기</a></li>
                                         </ul>
                                     </li>
-                                    <li class="active"><a href="#">로그인</a></li>
+                                    <li class="active"><a href="/user/loginForm">로그인</a></li>
                                 </ul>
 
                                 <!-- Newsletter Form -->
