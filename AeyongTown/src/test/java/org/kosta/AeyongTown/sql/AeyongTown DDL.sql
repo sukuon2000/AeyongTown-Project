@@ -11,6 +11,7 @@ drop table t_trade_loc;
 drop table t_location;
 drop table t_member_img;
 drop table t_goods_img;
+drop table t_authorities;
 
 
 --1 유저 테이블 생성
@@ -135,6 +136,5 @@ create table t_member_img(
 create table t_authorities(
     member_id varchar2(30) not null,
     authority varchar2(10) not null,
-    constraint aut_member_id foreign key (member_id) references t_member(member_id) on delete cascade,
-    constraint pk_authority primary key (member_id)
+    constraint aut_member_id foreign key (member_id) references t_member(member_id) on delete cascade
 );

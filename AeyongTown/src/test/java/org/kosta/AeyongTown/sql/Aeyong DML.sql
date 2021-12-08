@@ -7,7 +7,8 @@ select * from t_member;
 
 select * from T_AUTHORITIES;
 
+
 insert into T_AUTHORITIES(member_id, authority) values('test2', 'user');
-
-
+insert into T_AUTHORITIES(member_id, authority) values('test2', 'admin');
+insert into T_AUTHORITIES(member_id, authority) values('testtest', 'user');
 

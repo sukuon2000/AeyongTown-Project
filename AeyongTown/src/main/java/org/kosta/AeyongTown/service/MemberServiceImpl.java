@@ -22,13 +22,13 @@ public class MemberServiceImpl implements MemberService {
 	@Transactional
 	@Override
 	public void registerMember(MemberVO memberVO) {
+		// 입력받은 패스워드 암호화
 		String encodedPassword = passwordEncoder.encode(memberVO.getPassword());
 		memberVO.setPassword(encodedPassword);
-		System.out.println("MemberService : " + memberVO);
+		System.out.println("회원가입 Service >" + memberVO);
+		//회원가입 + 권한부여
 		memberMapper.registerMember(memberVO);
-		
-		//AuthoritiesVO authority = new AuthoritiesVO(memberVO.getMemberId(),"user");
-		
+		memberMapper.registerAddAuthority(memberVO.getMemberId());
 	}
 
 	@Override

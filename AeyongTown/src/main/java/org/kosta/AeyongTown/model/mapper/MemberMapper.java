@@ -11,6 +11,7 @@ public interface MemberMapper {
 
 	// 회원가입
 	void registerMember(MemberVO memberVO);
+	void registerAddAuthority(String memberId);
 	//회원정보조회
 	MemberVO selectMemberInfo(String memberId);
 	//아이디 찾기

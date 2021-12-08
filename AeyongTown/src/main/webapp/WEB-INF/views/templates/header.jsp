@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!-- 이유는 모르겠으나 시큐리티 주석에서 에더남ㅠㅠ -->
-<%-- <%@taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>--%>
+<%@taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
     <!-- Search Wrapper -->
     <div class="search-wrapper">
         <!-- Close Btn -->
@@ -70,15 +69,6 @@
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul>
-                                    
-                                    <li><a href="#">애용이 정보</a>
-                                        <ul class="dropdown">
-                                            <li><a href="#">회원정보</a></li>
-                                            <li><a href="#">내가 올린 물건</a></li>
-                                            <li><a href="#">찜목록</a></li>
-                                            <li><a href="#">거래중인 물건</a></li>
-                                        </ul>
-                                    </li>
                                     <li><a href="#">카테고리 애용</a>
                                         <ul class="dropdown">
                                             <li><a href="#">전자제품</a></li>
@@ -93,13 +83,40 @@
                                             <li><a href="#">동네 이야기</a></li>
                                         </ul>
                                     </li>
-                                    <li class="active"><a href="/user/loginForm">로그인</a></li>
+                                    <sec:authorize access="isAuthenticated()==false">
+                                    <li class="active"><a href="/loginForm">로그인</a></li>
+                                    </sec:authorize>
+                                    <sec:authorize access="isAuthenticated()">
+                                    <li><a href="#">애용이 정보</a>
+                                        <ul class="dropdown">
+                                            <li><a href="#">회원정보</a></li>
+                                            <li><a href="#">내가 올린 물건</a></li>
+                                            <li><a href="#">찜목록</a></li>
+                                            <li><a href="#">거래중인 물건</a></li>
+                                        </ul>
+                                    </li>
+                                    
+                                    <sec:authentication property="principal.nick" />님 안녕하세요!
+                                    </sec:authorize>
                                 </ul>
-
-                                <!-- Newsletter Form -->
-                                <div class="search-btn">
-                                    <i class="fa fa-search" aria-hidden="true"></i>
-                                </div>
+								<sec:authorize access="isAuthenticated()">
+								<div class="logout-btn">
+									<a href="#" id="logoutAction">&nbsp;&nbsp;로그아웃
+									<i	class="fa fa-user" aria-hidden="true"></i></a>
+								</div>
+								<script type="text/javascript">
+									$(document).ready(function() {
+										$(".logout-btn").click(function() {
+											$("#logoutForm").submit();
+										});
+									})
+								</script>
+								<form id="logoutForm"
+									action="${pageContext.request.contextPath}/logout"
+									method="post" style="display: none">
+									<sec:csrfInput />
+								</form>
+								</sec:authorize>
 
                             </div>
                             <!-- Nav End -->

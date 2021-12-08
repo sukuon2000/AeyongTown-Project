@@ -8,8 +8,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into
 		t_member(member_id, m_password, m_name, nick, tel, birth, email,
 		gender)
-		values(#{memberId}, #{password}, #{name}, #{nick}, #{tel}, to_date(#{birth},'yyyymmdd'),
+		values(#{memberId}, #{password}, #{name}, #{nick}, #{tel}, to_date(replace(#{birth}, '-', ''),'yyyymmdd'),
 		#{email}, #{gender})
+	</insert>
+	<insert id="registerAddAuthority" parameterType="string">
+		insert into t_authorities(member_id, authority) 
+		values(#{value}, 'user')
 	</insert>
 
 	<select id="selectMemberInfo" parameterType="string"	resultType="memberVO">
@@ -35,15 +39,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		and email=#{email}
 	</select>
 	<select id="idCheck" parameterType="string" resultType="string">
-		select member_id
+		select count(*)
 		from t_member
 		where member_id=#{value}
 	</select>
 
-	<!-- 스프링 시큐리티에서 해당하는 아이디와 패스워드가 존재, 일치하는지 -->
+	<!-- 스프링 시큐리티에서 해당하는 아이디와 패스워드가 존재, 일치하는지 
+		로그인 후 이 정보들을 바탕으로 세션에 정보들이 들어간다-->
 	<select id="findMemberById" resultType="memberVO">
-		select member_id as memberId, 
-		m_password as password
+		select 
+			member_id as memberId, 
+			m_password as password,
+			m_name as name,
+			nick,
+			birth,
+			email,
+			gender
 		from t_member
 		where member_id=#{value}
 	</select>

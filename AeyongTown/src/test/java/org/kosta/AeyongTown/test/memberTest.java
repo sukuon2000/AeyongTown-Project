@@ -34,7 +34,11 @@ class memberTest {
 	@Test
 	public void idCheckTest() {
 		String memberId = "test2";
-		System.out.println("<idCheck Test> memberId : " + ms.idCheck(memberId));
+		if(ms.idCheck(memberId).equals("1")) {
+			System.out.println("Exist");
+		} else {
+			System.out.println("Not Exist");
+		}
 	}
 	
 	//회원정보조회
