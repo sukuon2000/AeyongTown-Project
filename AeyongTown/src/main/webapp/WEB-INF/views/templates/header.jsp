@@ -51,7 +51,7 @@
                     <nav class="classy-navbar justify-content-between" id="deliciousNav">
 
                         <!-- Logo -->
-                        <a class="nav-brand" href="#"><img src="img/core-img/aeyong logo50.png" alt=""></a>
+                        <a class="nav-brand" href="${pageContext.request.contextPath}/home"><img src="/img/core-img/aeyong logo50.png" alt=""></a>
 
                         <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
@@ -79,7 +79,7 @@
                                     </li>
                                     <li><a href="#">내 동네 애용</a>
                                         <ul class="dropdown">
-                                            <li><a href="#">올라온 물건</a></li>
+                                            <li><a href="${pageContext.request.contextPath}/goods/list/all">올라온 물건</a></li>
                                             <li><a href="#">동네 이야기</a></li>
                                         </ul>
                                     </li>

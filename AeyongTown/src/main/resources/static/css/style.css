@@ -491,15 +491,15 @@ textarea:focus {
         font-weight: 600; }
         .header-area .delicious-main-menu .classy-navbar .classynav > ul > li > a:hover, .header-area .delicious-main-menu .classy-navbar .classynav > ul > li > a:focus {
           font-size: 14px;
-          color: #ffffff;
-          background-color: #40ba37;
-          border-bottom: 3px solid #1c8314; }
+          color: #474747;
+          background-color: #FFD700;
+          border-bottom: 3px solid #ddbc00; }
           .header-area .delicious-main-menu .classy-navbar .classynav > ul > li > a:hover::after, .header-area .delicious-main-menu .classy-navbar .classynav > ul > li > a:focus::after {
             color: #ffffff; }
       .header-area .delicious-main-menu .classy-navbar .classynav > ul > li.active > a {
-        color: #ffffff;
-        background-color: #40ba37;
-        border-bottom: 3px solid #1c8314; }
+        color: #474747;
+        background-color: #FFD700;
+        border-bottom: 3px solid #ddbc00; }
         .header-area .delicious-main-menu .classy-navbar .classynav > ul > li.active > a::after {
           color: #ffffff; }
     .header-area .delicious-main-menu .classynav .search-btn {
