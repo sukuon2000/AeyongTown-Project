@@ -1028,9 +1028,9 @@ textarea:focus {
   padding: 0 3px; }
 
 .single-preparation-step {
-  position: relative;
+  position: static;
   z-index: 1;
-  margin-bottom: 50px; }
+  margin-bottom: 30px; }
   .single-preparation-step h4 {
     color: #474747;
     -webkit-box-flex: 0;
@@ -1038,7 +1038,9 @@ textarea:focus {
     flex: 0 0 60px;
     max-width: 60px;
     width: 60px;
-    margin-bottom: 0; }
+    margin-right: 20px; }
+.single-preparation-step h6 {
+	margin-right: 20px; }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .ingredients {

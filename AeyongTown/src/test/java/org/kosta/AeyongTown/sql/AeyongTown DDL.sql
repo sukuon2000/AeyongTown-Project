@@ -28,6 +28,11 @@ create table t_member(
     constraint check_gender check( gender in('남성','여성')),
     constraint check_status check( status in('on', 'off'))
 );
+-- 2021-12-13 img_path(프로필 이미지 경로) 컬럼 추가
+ALTER table t_member add(img_path varchar2(300));
+select * from t_member;
+-- 2021-12-15 img_path 컬럼 디폴트 값 추가
+alter table t_member modify (img_path default 'aeyong kim.png');
 
 --2 카테고리 테이블
 create table t_category(
@@ -122,15 +127,19 @@ create table t_goods_img(
     constraint pk_t_goods_img primary key(goods_id, img_id),
     constraint check_img_id check(img_id in(1, 2, 3, 4, 5, 6))
 );
+select * from t_goods_img;
 
 
 --10 유저 이미지 테이블
+-- <사용 x>
 create table t_member_img(
     member_id varchar2(30) not null,
     img_path varchar2(300) not null,
+    upload_date date default sysdate not null,
     constraint fk_member_img foreign key (member_id) references t_member(member_id) on delete cascade,
-    constraint pk_member_img primary key (member_id, img_path)
+    constraint pk_member_img primary key (member_id)
 );
+select * from t_member_img;
 
 --11 유저 권한
 create table t_authorities(
@@ -138,3 +147,4 @@ create table t_authorities(
     authority varchar2(10) not null,
     constraint aut_member_id foreign key (member_id) references t_member(member_id) on delete cascade
 );
+select * from t_authorities;

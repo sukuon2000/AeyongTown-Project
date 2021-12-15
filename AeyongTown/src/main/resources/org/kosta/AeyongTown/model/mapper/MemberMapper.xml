@@ -15,17 +15,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into t_authorities(member_id, authority) 
 		values(#{value}, 'user')
 	</insert>
-
+	
+	<!-- 내 정보 조회, 사용자 정보 조회 -->
 	<select id="selectMemberInfo" parameterType="string"	resultType="memberVO">
 		select
-		member_id,
-		m_password as password,
-		m_name as name,
-		nick,
-		tel,
-		to_char(birth, 'yyyy-mm-dd') as birth,
-		email,
-		gender
+			member_id as memberId,
+			m_name as name,
+			nick,
+			to_char(birth ,'yyyy-mm-dd') as birth,
+			email,
+			tel,
+			gender,
+			img_path as imgPath,
+			status
 		from t_member
 		where member_id=#{value}
 	</select>
@@ -52,9 +54,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			m_password as password,
 			m_name as name,
 			nick,
-			birth,
+			to_char(birth ,'yyyy-mm-dd') as birth,
 			email,
-			gender
+			tel,
+			gender,
+			img_path as imgPath,
+			status
 		from t_member
 		where member_id=#{value}
 	</select>
@@ -70,4 +75,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from t_authorities
 		where member_id=#{value}
 	</select>
+	
+	<!-- 닉네임 변경 -->
+	<update id="modifyNick" parameterType="string">
+		update 
+			t_member 
+		set 
+			nick=#{nick} 
+		where 
+			member_id=#{memberId}
+	</update>
+	
+	<!-- 닉네임, 프로필 이미지 변경 -->
+	<update id="modifyNickAndImg" parameterType="string">
+		update
+			t_member
+		set
+			nick=#{nick},
+			img_path=#{imgPath}
+		where
+			member_id=#{memberId}
+	</update>
 </mapper>

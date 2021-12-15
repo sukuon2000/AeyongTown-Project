@@ -89,7 +89,7 @@
                                     <sec:authorize access="isAuthenticated()">
                                     <li><a href="#">애용이 정보</a>
                                         <ul class="dropdown">
-                                            <li><a href="#">회원정보</a></li>
+                                            <li><a href="${pageContext.request.contextPath}/user/my-info">회원정보</a></li>
                                             <li><a href="#">내가 올린 물건</a></li>
                                             <li><a href="#">찜목록</a></li>
                                             <li><a href="#">거래중인 물건</a></li>
