@@ -25,3 +25,20 @@ update
 			img_path='aeyong ddi.png'
 		where
 			member_id='test2';
+
+select * from t_member_loc;
+delete from t_member_loc where member_id='test2';
+insert into t_member_loc values('testtest', '4146151000', 37.233311, 127.194260, '삼환나우빌 109동 앞');
+
+
+
+select t_goods_id_seq.currval, t_goods_id_seq.nextval from dual;
+
+drop sequence t_goods_id_seq;
+create sequence t_goods_id_seq;
+delete from t_goods;
+delete from t_trade_loc;
+delete from t_goods_img;
+select * from T_GOODS;
+select * from t_trade_loc;
+select * from t_goods_img;

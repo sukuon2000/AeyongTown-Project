@@ -12,8 +12,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{email}, #{gender})
 	</insert>
 	<insert id="registerAddAuthority" parameterType="string">
-		insert into t_authorities(member_id, authority) 
-		values(#{value}, 'user')
+		insert into t_authorities(member_id, ROLE) 
+		values(#{value}, 'ROLE_USER')
 	</insert>
 	
 	<!-- 내 정보 조회, 사용자 정보 조회 -->
@@ -31,6 +31,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from t_member
 		where member_id=#{value}
 	</select>
+	
+	<resultMap type="MemberVO" id="MemberRM">
+		<result column="code" property="mapVO.code"/>
+		<result column="lat" property="mapVO.lat"/>
+		<result column="lng" property="mapVO.lng"/>
+		<result column="sido" property="mapVO.sido"/>
+		<result column="sigungu" property="mapVO.sigungu"/>
+		<result column="dong" property="mapVO.dong"/>
+		<result column="detail" property="mapVO.detail"/>
+	</resultMap>
+	
+	<select id="selectMemberInfoIncludeMap" parameterType="string" resultMap="MemberRM">
+		select
+		    m.member_id as memberId,
+		    m.m_name as name,
+			m.nick as nick,
+			to_char(m.birth ,'yyyy-mm-dd') as birth,
+			m.email as email,
+			m.tel as tel,
+		    m.gender as gender,
+		    m.img_path as imgPath,
+		    m.status as status,
+		    ml.code as code,
+		    ml.map_lat as lat,
+		    ml.map_lng as lng,
+		    loc.sido as sido,
+		    loc.sigungu as sigungu,
+		    loc.dong as dong,
+		    ml.detail as detail
+		from t_member m, t_member_loc ml, t_location loc
+		where m.member_id=ml.member_id(+) 
+		    and ml.code=loc.code(+)
+		    and m.member_id=#{value}
+	</select>
+	
+
 
 	<select id="findMemberId" parameterType="memberVO" resultType="string">
 		select member_id
@@ -63,15 +99,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from t_member
 		where member_id=#{value}
 	</select>
+	
 	<!-- 스프링 시큐리티에서 해당 권한이 존재하는지 -->
-	<resultMap type="AuthoritiesVO" id="AuthoritiesRM">
-		<result column="member_id" property="AuthoritiesVO.memberId"/>
-		<result column="authority" property="AuthoritiesVO.authority"/>
-	</resultMap>
 	<select id="selectAuthorityById" resultType="AuthoritiesVO">
 		select 
 			member_id,
-			authority
+			ROLE
 		from t_authorities
 		where member_id=#{value}
 	</select>

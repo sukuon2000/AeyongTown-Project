@@ -1,8 +1,10 @@
 package org.kosta.AeyongTown.test;
 
 import org.junit.jupiter.api.Test;
+import org.kosta.AeyongTown.model.mapper.MapMapper;
 import org.kosta.AeyongTown.model.mapper.MemberMapper;
 import org.kosta.AeyongTown.model.vo.MemberVO;
+import org.kosta.AeyongTown.service.MapService;
 import org.kosta.AeyongTown.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +16,10 @@ class memberTest {
 	MemberMapper mm;
 	@Autowired
 	MemberService ms;
+	@Autowired
+	MapMapper mapMapper;
+	@Autowired
+	MapService mapService;
 	
 	//회원가입
 	//@Test
@@ -63,12 +69,13 @@ class memberTest {
 	}
 	//@Test
 	public void findMemberTest() {
-		String memberId = "test2";
-		System.out.println(ms.findMemberById(memberId));
-		System.out.println(ms.selectAuthorityById(memberId));
+		String memberId = "testtest";
+		System.out.println("[회원 기본 정보 조회]\n" + ms.findMemberById(memberId));
+		System.out.println("[회원 권한 정보 조회]\n" + ms.selectAuthorityById(memberId));
+		System.out.println("[회원 모든 정보 조회]\n" + mm.selectMemberInfoIncludeMap(memberId));
 	}
 	
-	@Test
+	//@Test
 	public void memberInfoTest() {
 		String id = "testtest";
 		MemberVO mvo = mm.findMemberById(id);
@@ -116,6 +123,37 @@ class memberTest {
 		System.out.println("이메일 : " + sbEmail);
 		mvo.setTel(sbTel.toString());
 		mvo.setEmail(sbEmail.toString());
+		System.out.println(mvo);
+	}
+	//@Test
+	public void selectMemberLocationTest() {
+		String memberId = "test2";
+		System.out.println(mapService.selectMemberLocation(memberId));
+	}
+	
+	//@Test
+	public void inputUserLocation() {
+		String code = "1114052000";
+		double lat = 37.564337;
+		double lng = 126.977337;
+		//String detail = "시청역 7번 출구 앞";
+		String detail = null;
+		String memberId = "testtest";
+		mapService.inputUserLocation(memberId, code, lat, lng, detail);
+		System.out.println(mapService.selectMemberLocation(memberId));
+	}
+	
+	//@Test
+	public void deleteUserLocationTest() {
+		String memberId = "testtest";
+		//mapMapper.deleteUserLocation(memberId);
+		System.out.println(mapService.selectMemberLocation(memberId));
+	}
+	
+	@Test
+	public void memberVOTest() {
+		MemberVO mvo = new MemberVO();
+		mvo = ms.selectMemberInfoInclueMap("testtest");
 		System.out.println(mvo);
 	}
 }

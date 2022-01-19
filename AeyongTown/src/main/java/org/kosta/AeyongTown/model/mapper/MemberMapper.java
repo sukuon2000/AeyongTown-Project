@@ -15,6 +15,7 @@ public interface MemberMapper {
 	String idCheck(String memberId);
 	//회원정보조회
 	MemberVO selectMemberInfo(String memberId);
+	MemberVO selectMemberInfoIncludeMap(String memberId);
 	//아이디 찾기
 	String findMemberId(MemberVO memberVO);
 	

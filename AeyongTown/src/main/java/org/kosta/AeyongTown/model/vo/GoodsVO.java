@@ -9,31 +9,32 @@ public class GoodsVO {
 	private String title;
 	private String info;
 	private int price;
+	private CategoryVO categoryVO;
 	private String uploadDate;
 	private int viewCounts;
 	private MapVO MapVO;
-	private ArrayList<GoodsImgVO> goodsImgVO;
-	
-	
+	private String goodsThumbnail;
+	private ArrayList<String> imgPath;
 	public GoodsVO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	public GoodsVO(int goodsId, MemberVO memberVO, String title, String info, int price, String uploadDate,
-			int viewCounts, org.kosta.AeyongTown.model.vo.MapVO mapVO, ArrayList<GoodsImgVO> goodsImgVO) {
+	public GoodsVO(int goodsId, MemberVO memberVO, String title, String info, int price, CategoryVO categoryVO,
+			String uploadDate, int viewCounts, org.kosta.AeyongTown.model.vo.MapVO mapVO, String goodsThumbnail,
+			ArrayList<String> imgPath) {
 		super();
 		this.goodsId = goodsId;
 		this.memberVO = memberVO;
 		this.title = title;
 		this.info = info;
 		this.price = price;
+		this.categoryVO = categoryVO;
 		this.uploadDate = uploadDate;
 		this.viewCounts = viewCounts;
 		MapVO = mapVO;
-		this.goodsImgVO = goodsImgVO;
+		this.goodsThumbnail = goodsThumbnail;
+		this.imgPath = imgPath;
 	}
-
 	public int getGoodsId() {
 		return goodsId;
 	}
@@ -64,6 +65,12 @@ public class GoodsVO {
 	public void setPrice(int price) {
 		this.price = price;
 	}
+	public CategoryVO getCategoryVO() {
+		return categoryVO;
+	}
+	public void setCategoryVO(CategoryVO categoryVO) {
+		this.categoryVO = categoryVO;
+	}
 	public String getUploadDate() {
 		return uploadDate;
 	}
@@ -82,18 +89,23 @@ public class GoodsVO {
 	public void setMapVO(MapVO mapVO) {
 		MapVO = mapVO;
 	}
-	public ArrayList<GoodsImgVO> getGoodsImgVO() {
-		return goodsImgVO;
+	public String getGoodsThumbnail() {
+		return goodsThumbnail;
 	}
-	public void setGoodsImgVO(ArrayList<GoodsImgVO> goodsImgVO) {
-		this.goodsImgVO = goodsImgVO;
+	public void setGoodsThumbnail(String goodsThumbnail) {
+		this.goodsThumbnail = goodsThumbnail;
 	}
-
+	public ArrayList<String> getImgPath() {
+		return imgPath;
+	}
+	public void setImgPath(ArrayList<String> imgPath) {
+		this.imgPath = imgPath;
+	}
 	@Override
 	public String toString() {
-		return "GoodsVO [goodsId=" + goodsId + ", memberVO=" + memberVO + ", title=" + title + ", info=" + info
-				+ ", price=" + price + ", uploadDate=" + uploadDate + ", viewCounts=" + viewCounts + ", MapVO=" + MapVO
-				+ ", goodsImgVO=" + goodsImgVO + "]";
+		return "\nGoodsVO [goodsId=" + goodsId + ", memberVO=" + memberVO + ", \ntitle=" + title + ", info=" + info
+				+ ", price=" + price + ", categoryVO=" + categoryVO + ", uploadDate=" + uploadDate + ", viewCounts="
+				+ viewCounts + ", \nMapVO=" + MapVO + ", goodsThumbnail=" + goodsThumbnail + ", \nimgPath=" + imgPath + "]";
 	}
 	
 	

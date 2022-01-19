@@ -7,9 +7,12 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.kosta.AeyongTown.model.mapper.MemberMapper;
+import org.kosta.AeyongTown.model.vo.MapVO;
 import org.kosta.AeyongTown.model.vo.MemberVO;
+import org.kosta.AeyongTown.service.MapService;
 import org.kosta.AeyongTown.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +28,9 @@ public class MemberController {
 	private MemberService memberService;
 	@Autowired
 	private MemberMapper memberMapper;
+	@Autowired
+	private MapService mapService;
+
 	
 	//로그인폼
 	@RequestMapping("/loginForm")
@@ -63,7 +69,7 @@ public class MemberController {
 		MemberVO sessionMvo = (MemberVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String memberId = sessionMvo.getMemberId();
 		//세션에는 비밀번호까지 담겨있기 때문에 비밀 번호를 뺀 쿼리문을 돌린다
-				MemberVO mvo = memberService.selectMemberInfo(memberId);
+			MemberVO mvo = memberService.selectMemberInfoInclueMap(memberId);
 			// 전화번호			
 			StringBuilder tel = new StringBuilder();
 			tel.append(mvo.getTel().substring(0, 2)).append("*-")
@@ -103,7 +109,7 @@ public class MemberController {
 					.append(domain);
 			mvo.setTel(tel.toString());
 			mvo.setEmail(email.toString());
-		System.out.println(mvo);
+		
 		model.addAttribute("mvo", mvo);
 		return "member/member_info.tiles";
 	}
@@ -123,7 +129,6 @@ public class MemberController {
 			@RequestParam("profileImg") MultipartFile profileImg,
 			@RequestParam("nick") String nick,
 			HttpServletRequest request) throws IllegalStateException, IOException {
-		System.out.println("[회원정보 수정] modifyMyProfile 동작");
 		MemberVO mvo = (MemberVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String memberId = mvo.getMemberId();
 		
@@ -132,7 +137,6 @@ public class MemberController {
 			return "redirect:/user/modifyFail";
 		} else if(profileImg.isEmpty()) {
 			memberMapper.modifyNick(memberId, nick);
-			System.out.println("[회원정보 수정] 닉네임만 정상적으로 수정되었습니다");
 			return "redirect:/user/modifySuccess";
 		} else {
 			// 파일이 저장될 경로
@@ -146,10 +150,8 @@ public class MemberController {
 			
 			//파일 저장
 			File file = new File(filePath + beSavedFileName);
-			System.out.println("[파일 저장] : 파일명 설정 완료" + file.getName());
 			profileImg.transferTo(file);
 			memberMapper.modifyNickAndImg(memberId, nick, beSavedFileName);
-			System.out.println("[회원정보 수정] 닉네임과 프로필 이미지가 정상적으로 수정되었습니다");
 			return "redirect:/user/modifySuccess";
 		}
 	}
@@ -163,5 +165,60 @@ public class MemberController {
 	public String modifyResult_Fail() {
 		System.out.println("[error] 잘못된 경로로 접근한 회원이 존재합니다");
 		return "auth/accessDeniedView";
+	}
+	
+	@Secured("ROLE_USER")
+	@RequestMapping("/user/map/inputForm")
+	public String inputLocationForm() {
+		return "map/input_location_member.tiles";
+	}
+	
+	@Secured("ROLE_USER")
+	@RequestMapping("/user/map/modifyForm")
+	public String modifyLocationForm(Model model) {
+		MemberVO sessionMvo = (MemberVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId = sessionMvo.getMemberId();
+		MemberVO mvo = new MemberVO();
+		mvo = mapService.selectMemberLocation(memberId);
+		model.addAttribute("mvo", mvo);
+		return "map/modify_location_member.tiles";
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/user/map/input")
+	public String inputUserLocation(MapVO mapVO) {
+		System.out.println("[회원 지도 정보] 지도 정보 삽입 시작");
+		MemberVO mvo = (MemberVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId = mvo.getMemberId();
+		
+		System.out.println("[회원 지도 정보] 삽입 데이터 ID =" + memberId + ", " +  mapVO);
+		mapService.inputUserLocation(memberId, mapVO.getCode(), mapVO.getLat(), mapVO.getLng(), mapVO.getDetail());
+		
+		System.out.println("[회원 지도 정보] 지도 정보 삽입 완료");
+		return "redirect:/user/my-info";
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/user/map/update")
+	public String updateUserLocation(MapVO mapVO) {
+		System.out.println("[회원 지도 정보] 지도 정보 수정 시작");
+		MemberVO mvo = (MemberVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId = mvo.getMemberId();
+		
+		System.out.println("[회원 지도 정보] 삽입 데이터 ID =" + memberId + ", " +  mapVO);
+		System.out.println("detail : " + mapVO.getDetail().equals(""));
+		mapService.updateUserLocation(memberId, mapVO.getCode(), mapVO.getLat(), mapVO.getLng(), mapVO.getDetail());
+		
+		System.out.println("[회원 지도 정보] 지도 정보 수정 완료");
+		return "redirect:/user/my-info";
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/user/map/delete")
+	public String deleteUserLocation() {
+		System.out.println("[회원 지도 정보] 지도 정보 삭제 시작");
+		MemberVO mvo = (MemberVO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String memberId = mvo.getMemberId();
+		
+		mapService.deleteUserLocation(memberId);
+		System.out.println("[회원 지도 정보] 지도 정보 삭제 완료");
+		return "redirect:/user/my-info";
 	}
 }

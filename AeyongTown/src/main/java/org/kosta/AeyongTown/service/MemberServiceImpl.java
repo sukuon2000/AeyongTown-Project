@@ -55,4 +55,9 @@ public class MemberServiceImpl implements MemberService {
 	public String idCheck(String memberId) {
 		return memberMapper.idCheck(memberId);
 	}
+
+	@Override
+	public MemberVO selectMemberInfoInclueMap(String memberId) {
+		return memberMapper.selectMemberInfoIncludeMap(memberId);
+	}
 }

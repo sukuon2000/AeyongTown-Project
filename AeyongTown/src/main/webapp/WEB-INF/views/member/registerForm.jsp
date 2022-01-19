@@ -32,9 +32,7 @@ $(document).ready(function(){
 //spring security 적용시 ajax post 방식은 아래와 같이 beforeSend property에서 csrf 값을 셋팅해야 함 
 	$("#idCheck").click(function() {
 		let memberId=$("#memberId").val();
-		
 		// 아이디 생성시 영문자로 시작하고 소문자+숫자로만 6~20자
-
 		if(memberId=="" || memberId==null) {
 			alert("아이디를 입력하세요");
 			return;

@@ -2,8 +2,8 @@ package org.kosta.AeyongTown.model.vo;
 
 public class MapVO {
 	private String code;
-	private float lat;
-	private float lnt;
+	private double lat;
+	private double lng;
 	private String sido;
 	private String sigungu;
 	private String dong;
@@ -12,11 +12,11 @@ public class MapVO {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public MapVO(String code, float lat, float lnt, String sido, String sigungu, String dong, String detail) {
+	public MapVO(String code, double lat, double lng, String sido, String sigungu, String dong, String detail) {
 		super();
 		this.code = code;
 		this.lat = lat;
-		this.lnt = lnt;
+		this.lng = lng;
 		this.sido = sido;
 		this.sigungu = sigungu;
 		this.dong = dong;
@@ -28,17 +28,17 @@ public class MapVO {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public float getLat() {
+	public double getLat() {
 		return lat;
 	}
-	public void setLat(float lat) {
+	public void setLat(double lat) {
 		this.lat = lat;
 	}
-	public float getLnt() {
-		return lnt;
+	public double getLng() {
+		return lng;
 	}
-	public void setLnt(float lnt) {
-		this.lnt = lnt;
+	public void setLng(double lng) {
+		this.lng = lng;
 	}
 	public String getSido() {
 		return sido;
@@ -66,9 +66,7 @@ public class MapVO {
 	}
 	@Override
 	public String toString() {
-		return "MapVO [행정구역 코드=" + code + ", 위도=" + lat + ", 경도=" + lnt + ", (시,도=" + sido + "), (시군구=" + sigungu
-				+ "), (동=" + dong + "), (상세주소=" + detail + ")]";
+		return "MapVO [code=" + code + ", lat=" + lat + ", lng=" + lng + ", sido=" + sido + ", sigungu=" + sigungu
+				+ ", dong=" + dong + ", detail=" + detail + "]";
 	}
-	
-	
 }

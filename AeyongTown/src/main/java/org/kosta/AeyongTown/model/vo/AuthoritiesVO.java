@@ -4,17 +4,18 @@ import java.io.Serializable;
 
 public class AuthoritiesVO implements Serializable{
 	
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8994800699846114647L;
+	private static final long serialVersionUID = 3928464904307199064L;
 	private String memberId;
-	private String authority;
+	private String role;
 	public AuthoritiesVO() {	}
-	public AuthoritiesVO(String memberId, String authority) {
+	public AuthoritiesVO(String memberId, String role) {
 		super();
 		this.memberId = memberId;
-		this.authority = authority;
+		this.role = role;
 	}
 	public String getMemberId() {
 		return memberId;
@@ -22,15 +23,16 @@ public class AuthoritiesVO implements Serializable{
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
-	public String getAuthority() {
-		return authority;
+	public String getRole() {
+		return role;
 	}
-	public void setAuthority(String authority) {
-		this.authority = authority;
+	public void setRole(String role) {
+		this.role = role;
 	}
 	@Override
 	public String toString() {
-		return "AuthoritiesVO [memberId=" + memberId + ", authority=" + authority + "]";
+		return "AuthoritiesVO [memberId=" + memberId + ", role=" + role + "]";
 	}
+	
 	
 }

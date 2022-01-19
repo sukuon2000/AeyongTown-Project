@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="org.kosta.AeyongTown.model.mapper.MapMapper">
+	
+	<resultMap type="MemberVO" id="MemberRM">
+		<result column="code" property="mapVO.code"/>
+		<result column="lat" property="mapVO.lat"/>
+		<result column="lng" property="mapVO.lng"/>
+		<result column="sido" property="mapVO.sido"/>
+		<result column="sigungu" property="mapVO.sigungu"/>
+		<result column="dong" property="mapVO.dong"/>
+		<result column="detail" property="mapVO.detail"/>
+	</resultMap>
+	
+	
+	
+	<select id="selectMemberLocation" parameterType="string" resultMap="MemberRM">
+		select
+			m.member_id as memberId,
+			ml.code as code,
+			ml.map_lat as lat,
+			ml.map_lng as lng,
+			loc.sido as sido,
+			loc.sigungu as sigungu,
+			loc.dong as dong,
+			ml.detail as detail
+		from t_member m, t_member_loc ml, t_location loc
+		where m.member_id=ml.member_id
+				and ml.code=loc.code
+				and m.member_id=#{memberId}
+	</select>
+	
+	<insert id="inputUserLocation">
+		insert into 
+			t_member_loc 
+				(member_id, code, map_lat, map_lng<if test="detail != null">, detail</if>)
+		values
+			(#{memberId}, 
+			#{code}, 
+			#{lat}, 
+			#{lng} 
+			<if test="detail != null">, #{detail}</if>)
+	</insert>
+	
+	<update id="updateUserLocation">
+		update t_member_loc
+		set 
+    		code=#{code},
+    		map_lat=#{lat},
+    		map_lng=#{lng},
+    		detail=<choose>
+    				  		<when test="detail != null or !detail.equals('')">#{detail}</when>
+    				  		<when test="detail == null or detail.equals('')">null</when>
+    				  </choose>
+		where
+    		member_id=#{memberId}
+	</update>
+	
+	<delete id="deleteUserLocation" parameterType="string">
+		delete from t_member_loc
+		where member_id=#{memberId}
+	</delete>
+	
+	<insert id="uploadGoodsLocation">
+		insert into 
+			t_trade_loc 
+				(goods_id, code, map_lat, map_lng<if test="detail != null">, detail</if>)
+		values(
+			T_GOODS_ID_SEQ.currval, 
+			#{code}, 
+			#{lat}, 
+			#{lng} 
+			<if test="detail != null">, #{detail}</if>)
+	</insert>
+	
+</mapper>

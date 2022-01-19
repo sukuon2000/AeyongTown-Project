@@ -26,4 +26,10 @@ public class CategoryVO {
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
+	@Override
+	public String toString() {
+		return "CategoryVO [categoryId=" + categoryId + ", categoryName=" + categoryName + "]";
+	}
+	
+	
 }

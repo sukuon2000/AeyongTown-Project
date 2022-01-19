@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="org.kosta.AeyongTown.model.mapper.GoodsMapper">
+	
+	<resultMap type="GoodsVO" id="GoodsRM">
+		<result column="categoryId" property="categoryVO.categoryId"/>
+		<result column="categoryName" property="categoryVO.categoryName"/>
+		<result column="memberId" property="memberVO.memberId"/>
+		<result column="nick" property="memberVO.nick"/>
+		<result column="member_img" property="memberVO.imgPath"/>
+		<result column="code" property="mapVO.code"/>
+		<result column="lat" property="mapVO.lat"/>
+		<result column="lng" property="mapVO.lng"/>
+		<result column="sido" property="mapVO.sido"/>
+		<result column="sigungu" property="mapVO.sigungu"/>
+		<result column="dong" property="mapVO.dong"/>
+		<result column="detail" property="mapVO.detail"/>
+	</resultMap>
+	
+	<resultMap type="MemberVO" id="MemberRM">
+		<result column="code" property="mapVO.code"/>
+		<result column="lat" property="mapVO.lat"/>
+		<result column="lng" property="mapVO.lng"/>
+		<result column="sido" property="mapVO.sido"/>
+		<result column="sigungu" property="mapVO.sigungu"/>
+		<result column="dong" property="mapVO.dong"/>
+		<result column="detail" property="mapVO.detail"/>
+	</resultMap>
+	
+	<select id="getTotalGoodsCount" resultType="int">
+		select count(*) from t_goods
+	</select>
+	
+	<insert id="uploadGoodsContents">
+		insert into t_goods(
+			goods_id, 
+			member_id, 
+			category_id, 
+			title, 
+			info, 
+			price
+		) 
+		values(
+			T_GOODS_ID_SEQ.nextval, 
+			#{memberId}, 
+			#{categoryId}, 
+			#{title}, 
+			#{info}, 
+			#{price}
+		)
+	</insert>
+	
+	<insert id="uploadGoodsImg">
+		insert into t_goods_img(
+			goods_id,
+			img_id,
+			img_path
+		)
+		values(
+			t_goods_id_seq.currval, 
+			#{index}, 
+			#{imgPath}
+		)
+	</insert>
+	
+	<select id="getAllRecipeListByRowNumber" resultMap="GoodsRM">
+		select
+		    rnum_view.*
+		from(
+		    select
+		        rownum as rnum,
+		        g.goods_id as goodsId,
+		        m.nick as nick,
+		        g.title as title,
+		        g.price as price,
+		        u.uploadDate as uploadDate,
+		        l.sido as sido, 
+		        l.sigungu as sigungu, 
+		        l.dong as dong,
+		        g.status as status,
+		        img.img_path as goodsThumbnail
+		    from
+		        t_goods g, t_member m, t_trade_loc tl, t_location l, t_goods_img img,
+		        (select
+		            goods_id,
+		            case
+		                when diff >= (7*24*60*60) then to_char(trunc(diff / (7*24*60*60), 0),'0')||'주 전'
+		                when diff >= (24*60*60) then to_char(trunc(diff / (24*60*60), 0),'0')||'일 전'
+		                when diff >= (60*60) then to_char(trunc(diff / (60*60), 0),'90')||'시간 전'
+		                when diff > 60 then to_char(trunc(diff / 60, 0),'90')||'분 전'
+		                when diff >= 1 then to_char(diff, '90')||'초 전'
+		            end as uploadDate
+		        from(
+		            select goods_id, round(((sysdate - to_date(to_char(upload_date, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-mm-dd hh24:mi:ss'))*24*60*60),0) as diff 
+		            from t_goods
+		        )) u
+		    where
+		        g.member_id=m.member_id
+		        and g.goods_id=tl.goods_id
+		        and u.goods_id=g.goods_id
+		        and img.goods_id=g.goods_id
+		        and tl.code=l.code
+		        and img.img_id=1
+		    order by g.goods_id desc) rnum_view
+		where rnum between #{startRowNumber} and #{endRowNumber}
+	</select>
+	
+	<select id="getGoodsDetail" parameterType="int" resultMap="GoodsRM">
+		select 
+		    g.goods_id as goodsId,
+		    m.member_id as memberId,
+		    m.nick as nick,
+		    m.img_path as member_img,
+		    g.title as title,
+		    g.price as price,
+		    g.info as info,
+		    u.uploadDate as uploadDate,
+		    g.view_count as viewCounts,
+		    g.category_id as categoryId,
+		    c.category_name as categoryName,
+		    g.status as status,
+		    tl.code as code,
+		    tl.map_lat as lat,
+		    tl.map_lng as lng,
+		    l.sido as sido,
+		    l.sigungu as sigungu,
+		    l.dong as dong,
+		    tl.detail as detail
+		from 
+		    t_goods g, 
+		    t_member m,
+		    (select
+		        goods_id,
+		        case
+		            when diff >= (7*24*60*60) then to_char(trunc(diff / (7*24*60*60), 0),'0')||'주 전'
+		            when diff >= (24*60*60) then to_char(trunc(diff / (24*60*60), 0),'0')||'일 전'
+		            when diff >= (60*60) then to_char(trunc(diff / (60*60), 0),'90')||'시간 전'
+		            when diff > 60 then to_char(trunc(diff / 60, 0),'90')||'분 전'
+		            when diff >= 1 then to_char(diff, '90')||'초 전'
+		        end as uploadDate
+		    from(
+		        select goods_id, round(((sysdate - to_date(to_char(upload_date, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-mm-dd hh24:mi:ss'))*24*60*60),0) as diff 
+		        from t_goods
+		    )) u,
+		    t_category c,
+		    t_trade_loc tl,
+		    t_location l
+		where 
+		    g.goods_id=u.goods_id
+		    and g.member_id=m.member_id
+		    and g.category_id=c.category_id
+		    and g.goods_id=tl.goods_id
+		    and tl.code=l.code
+		    and g.goods_id=#{goodsId}
+	</select>
+	
+	<select id="getGoodsDetailImg" parameterType="int" resultType="string">
+		select
+		    gl.img_path as imgPath
+		from
+		    t_goods g,
+		    t_goods_img gl
+		where
+			g.goods_id=gl.goods_id
+    		and g.goods_id=#{goodsId}
+	</select>
+	
+	<select id="getSellerAddr" parameterType="int" resultMap="MemberRM">
+		select
+		    m.member_id as memberId,
+		    ml.code as code,
+		    l.sido as sido,
+		    l.sigungu as sigungu,
+		    l.dong as dong
+		from
+		    t_member m, t_goods g, t_member_loc ml, t_location l
+		where 
+		    g.member_id=m.member_id
+		    and m.member_id=ml.member_id(+)
+		    and ml.code=l.code(+)
+		    and g.goods_id=#{goodsId}
+	</select>
+</mapper>

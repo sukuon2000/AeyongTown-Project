@@ -12,7 +12,6 @@ public class MemberVO {
 	private String status;
 	private String imgPath;
 	private MapVO mapVO;
-	
 	public MemberVO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -32,7 +31,6 @@ public class MemberVO {
 		this.imgPath = imgPath;
 		this.mapVO = mapVO;
 	}
-	
 	public String getMemberId() {
 		return memberId;
 	}
@@ -101,8 +99,8 @@ public class MemberVO {
 	}
 	@Override
 	public String toString() {
-		return "MemberVO [memberId=" + memberId + ", password=" + password + ", 이름=" + name + ", 닉네임=" + nick
-				+ ", 이메일=" + email + ", 전화번호=" + tel + ", 생일=" + birth + ", 성별=" + gender + ", 회원상태=" + status
+		return "MemberVO [memberId=" + memberId + ", password=" + password + ", name=" + name + ", nick=" + nick
+				+ ", email=" + email + ", tel=" + tel + ", birth=" + birth + ", gender=" + gender + ", status=" + status
 				+ ", imgPath=" + imgPath + ", mapVO=" + mapVO + "]";
 	}
 	

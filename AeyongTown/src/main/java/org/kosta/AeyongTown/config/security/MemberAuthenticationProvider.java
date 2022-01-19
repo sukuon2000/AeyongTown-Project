@@ -44,7 +44,7 @@ public class MemberAuthenticationProvider implements AuthenticationProvider {
 		// 권한이 존재하면 SimpleGrantedAuthority에 넣음 (권한을 객체에 리스트형식으로 저장)
 		List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
 		for(AuthoritiesVO au : list) {
-			authorities.add(new SimpleGrantedAuthority(au.getAuthority()));
+			authorities.add(new SimpleGrantedAuthority(au.getRole()));
 		}
 		// UsernamePasswordAuthenticationToken 발급 후 리턴 (이곳에 아이디, 패스워드, 권한 정보가 들어감)
 		// 인증 관리자 역할

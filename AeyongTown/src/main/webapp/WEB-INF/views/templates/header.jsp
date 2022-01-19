@@ -79,7 +79,7 @@
                                     </li>
                                     <li><a href="#">내 동네 애용</a>
                                         <ul class="dropdown">
-                                            <li><a href="${pageContext.request.contextPath}/goods/list/all">올라온 물건</a></li>
+                                            <li><a href="${pageContext.request.contextPath}/goods/list/all/1">올라온 물건</a></li>
                                             <li><a href="#">동네 이야기</a></li>
                                         </ul>
                                     </li>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="org.kosta.AeyongTown.model.mapper.CommentMapper">
+
+<resultMap type="CommentVO" id="CommentRM">
+	<result column="memberId" property="memberVO.memberId"/>
+	<result column="nick" property="memberVO.nick"/>
+	<result column="member_img" property="memberVO.imgPath"/>
+	<result column="sido" property="memberVO.mapVO.sido"/>
+	<result column="sigungu" property="memberVO.mapVO.sigungu"/>
+	<result column="dong" property="memberVO.mapVO.dong"/>
+</resultMap>
+
+	<select id="getCommemtByGoodsId" resultMap="CommentRM">
+		select
+		    c.goods_id as goodsId,
+		    c.comment_id as commentId,
+		    c.parent_comment_id as parentCommentId,
+		    level commentLevel,
+		    c.member_id as memberId,
+		    mi.nick as nick,
+		    mi.img_path as member_img,
+		    mi.sido as sido,
+		    mi.sigungu as sigungu,
+		    mi.dong as dong,
+		    case when delete_at='Y' then '**삭제된 댓글입니다**' else c.content end as content,
+		    c.delete_at as deleteAt,
+		    to_char(c.create_date, 'yyyy-mm-dd hh24:mi:ss') as createDate,
+		    case
+		            when diff >= (7*24*60*60) then to_char(trunc(diff / (7*24*60*60), 0),'0')||'주 전'
+		            when diff >= (24*60*60) then to_char(trunc(diff / (24*60*60), 0),'0')||'일 전'
+		            when diff >= (60*60) then to_char(trunc(diff / (60*60), 0),'90')||'시간 전'
+		            when diff > 60 then to_char(trunc(diff / 60, 0),'90')||'분 전'
+		            when diff >= 1 then to_char(diff, '90')||'초 전'
+		        end as uploadTime,
+		    to_char(c.update_date, 'yyyy-mm-dd hh24:mi:ss') as updateTime,
+		    to_char(c.delete_date, 'yyyy-mm-dd hh24:mi:ss') as deleteDate
+		from
+		    (select 
+		        comment_id, member_id, goods_id, parent_comment_id, content, delete_at, create_date, 
+		        round(((sysdate - to_date(to_char(create_date, 'yyyy-mm-dd hh24:mi:ss'), 'yyyy-mm-dd hh24:mi:ss'))*24*60*60),0) as diff,
+		        update_date, delete_date
+		    from t_comment where goods_id=#{goodsId}) c,
+		    (select m.member_id, m.nick, m.img_path, l.sido, l.sigungu, l.dong from t_member m, t_member_loc ml, t_location l where m.member_id=ml.member_id(+) and ml.code=l.code(+)) mi
+		where c.member_id=mi.member_id
+		start with parent_comment_id is null
+		connect by prior comment_id=parent_comment_id
+		order siblings by comment_id
+	</select>
+
+	<insert id="writeComment">
+		insert into 
+			t_comment(comment_id, member_id, goods_id, parent_comment_id, content, delete_at, create_date, update_date, delete_date) 
+		values
+			(T_COMMENT_SEQ.nextval, #{memberId}, #{goodsId}, null, #{content}, 'N', sysdate, null, null)
+	</insert>
+	
+	<insert id="writeRecomment">
+		insert into 
+			t_comment(comment_id, member_id, goods_id, parent_comment_id, content, delete_at, create_date, update_date, delete_date) 
+		values
+			(T_COMMENT_SEQ.nextval, #{memberId}, #{goodsId}, #{parentCommentId}, #{content}, 'N', sysdate, null, null)
+	</insert>
+	
+	<select id="countRecomment" resultType="int">
+		select count(*) from t_comment where parent_comment_id=#{commentId}
+	</select>
+	
+	<delete id="deleteComment" parameterType="int">
+		delete from t_comment 
+		where comment_id=#{commentId}
+	</delete>
+	
+	<update id="setDeleteAtY" parameterType="int">
+		update t_comment set delete_at='Y', delete_date=sysdate where comment_id=#{commentId}
+	</update>
+</mapper>
